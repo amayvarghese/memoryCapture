@@ -14,16 +14,16 @@ type FacingMode = "user" | "environment";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-gradient-to-b from-zinc-50 via-white to-zinc-100 px-4 pb-16 pt-10 text-zinc-900 dark:from-black dark:via-zinc-900 dark:to-black dark:text-zinc-100">
-      <div className="mx-auto flex w-full max-w-5xl flex-col gap-10">
-        <header className="flex flex-col gap-3">
-          <p className="text-sm font-medium uppercase tracking-[0.3em] text-zinc-500">
+    <main className="min-h-screen bg-gradient-to-b from-zinc-50 via-white to-zinc-100 px-4 pb-14 pt-8 text-zinc-900 dark:from-black dark:via-zinc-900 dark:to-black dark:text-zinc-100 sm:px-6 md:px-8">
+      <div className="mx-auto flex w-full max-w-5xl flex-col gap-8 sm:gap-10">
+        <header className="flex flex-col gap-2 sm:gap-3">
+          <p className="text-xs font-semibold uppercase tracking-[0.4em] text-zinc-500 sm:text-sm">
             MemoryPhoto · Camera Anywhere
           </p>
-          <h1 className="text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">
+          <h1 className="text-3xl font-semibold leading-tight tracking-tight sm:text-4xl md:text-5xl">
             Capture memories on laptop or phone without any native app.
           </h1>
-          <p className="text-lg text-zinc-600 dark:text-zinc-300 sm:text-xl">
+          <p className="text-base text-zinc-600 dark:text-zinc-300 sm:text-lg">
             Give your browser camera permission, snap a photo, download it
             instantly, or upload an existing picture. Works on modern desktop
             browsers, iOS Safari, and Android Chrome.
@@ -32,7 +32,7 @@ export default function Home() {
 
         <CameraStudio />
 
-        <section className="rounded-2xl border border-zinc-200 bg-white/70 p-6 shadow-lg shadow-zinc-800/5 backdrop-blur dark:border-zinc-800 dark:bg-zinc-900/70">
+        <section className="rounded-2xl border border-zinc-200 bg-white/80 p-4 shadow-lg shadow-zinc-800/5 backdrop-blur dark:border-zinc-800 dark:bg-zinc-900/70 sm:p-6">
           <h2 className="text-2xl font-semibold">How to deploy</h2>
           <ol className="mt-4 space-y-3 text-base text-zinc-700 dark:text-zinc-300">
             <li>
@@ -199,7 +199,7 @@ function CameraStudio() {
   }
 
   return (
-    <section className="grid gap-6 rounded-3xl border border-zinc-200 bg-white/70 p-6 shadow-xl shadow-zinc-800/5 backdrop-blur dark:border-zinc-800 dark:bg-zinc-900/70 md:grid-cols-2">
+    <section className="grid gap-5 rounded-3xl border border-zinc-200 bg-white/80 p-4 shadow-xl shadow-zinc-800/5 backdrop-blur dark:border-zinc-800 dark:bg-zinc-900/70 sm:p-6 md:grid-cols-2 md:gap-6 lg:grid-cols-[1.05fr_0.95fr]">
       <div className="flex flex-col gap-4">
         <div className="relative overflow-hidden rounded-2xl bg-black">
           <video
@@ -207,7 +207,7 @@ function CameraStudio() {
             playsInline
             autoPlay
             muted
-            className="aspect-[3/4] w-full rounded-2xl object-cover"
+            className="aspect-[9/16] w-full rounded-2xl object-cover md:aspect-[3/4]"
           />
           {!isStreaming && (
             <div className="absolute inset-0 flex items-center justify-center bg-black/70 text-center text-white">
@@ -221,16 +221,16 @@ function CameraStudio() {
             </div>
           )}
         </div>
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-wrap gap-3 sm:gap-4">
           <button
-            className="flex-1 rounded-full bg-zinc-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-white dark:text-zinc-900"
+            className="flex-1 rounded-full bg-zinc-900 px-4 py-3 text-base font-semibold text-white transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-white dark:text-zinc-900"
             onClick={capturePhoto}
             disabled={!isStreaming || isLoading}
           >
             Capture photo
           </button>
           <button
-            className="rounded-full border border-zinc-300 px-4 py-3 text-sm font-semibold text-zinc-700 transition hover:border-zinc-900 hover:text-zinc-900 dark:border-zinc-700 dark:text-zinc-200 dark:hover:border-white dark:hover:text-white"
+            className="rounded-full border border-zinc-300 px-4 py-3 text-base font-semibold text-zinc-700 transition hover:border-zinc-900 hover:text-zinc-900 dark:border-zinc-700 dark:text-zinc-200 dark:hover:border-white dark:hover:text-white sm:flex-1"
             onClick={() =>
               setFacingMode((prev) => (prev === "user" ? "environment" : "user"))
             }
@@ -254,7 +254,12 @@ function CameraStudio() {
       </div>
 
       <div className="flex flex-col gap-4 rounded-2xl border border-dashed border-zinc-300 p-4 dark:border-zinc-700">
-        <h3 className="text-xl font-semibold">Shots & uploads</h3>
+        <div className="flex flex-col gap-1">
+          <h3 className="text-xl font-semibold">Shots & uploads</h3>
+          <p className="text-sm text-zinc-500 dark:text-zinc-400 sm:hidden">
+            Scroll down after a capture to view the preview and actions.
+          </p>
+        </div>
         {photo ? (
           <div className="space-y-4">
             <div
