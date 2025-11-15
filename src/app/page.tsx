@@ -74,6 +74,24 @@ function CameraStudio() {
   const [error, setError] = useState<string | null>(null);
   const [photo, setPhoto] = useState<string | null>(null);
   const [photoMeta, setPhotoMeta] = useState<{ width: number; height: number } | null>(null);
+  const [isCompact, setIsCompact] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mediaQuery = window.matchMedia("(max-width: 640px)");
+    const handleChange = (event: MediaQueryListEvent | MediaQueryList) => {
+      setIsCompact(event.matches);
+    };
+    handleChange(mediaQuery);
+
+    const listener = (event: MediaQueryListEvent) => handleChange(event);
+    mediaQuery.addEventListener?.("change", listener);
+    mediaQuery.addListener?.(listener);
+    return () => {
+      mediaQuery.removeEventListener?.("change", listener);
+      mediaQuery.removeListener?.(listener);
+    };
+  }, []);
 
   const mediaSupported = useMemo(() => {
     if (typeof navigator === "undefined") {
@@ -199,19 +217,34 @@ function CameraStudio() {
   }
 
   return (
-    <section className="grid gap-5 rounded-3xl border border-zinc-200 bg-white/80 p-4 shadow-xl shadow-zinc-800/5 backdrop-blur dark:border-zinc-800 dark:bg-zinc-900/70 sm:p-6 md:grid-cols-2 md:gap-6 lg:grid-cols-[1.05fr_0.95fr]">
-      <div className="flex flex-col gap-4">
-        <div className="rounded-2xl border border-zinc-200 bg-zinc-100/60 p-3 text-sm font-medium text-zinc-600 shadow-sm dark:border-zinc-700 dark:bg-zinc-900/60 dark:text-zinc-300 md:hidden">
-          Tip: rotate to landscape for a wider preview. Controls stay pinned at
-          the bottom for easy access.
+    <section
+      className={[
+        "rounded-3xl border border-zinc-200 bg-white/85 p-3 shadow-xl shadow-zinc-800/5 backdrop-blur dark:border-zinc-800 dark:bg-zinc-900/80 sm:p-5",
+        "lg:grid lg:grid-cols-[1.02fr_0.98fr] lg:gap-6",
+        "space-y-4 lg:space-y-0",
+      ].join(" ")}
+    >
+      <div className="flex flex-col gap-4 lg:pr-2">
+        <div className="rounded-2xl border border-zinc-200 bg-zinc-100/60 p-3 text-sm font-medium text-zinc-600 shadow-sm dark:border-zinc-700 dark:bg-zinc-900/60 dark:text-zinc-300 lg:hidden">
+          {isCompact
+            ? "Rotate to landscape for a wider camera while keeping controls at your thumb."
+            : "Use landscape mode for the largest possible preview."}
         </div>
-        <div className="relative overflow-hidden rounded-2xl bg-black">
+        <div
+          className={[
+            "relative overflow-hidden rounded-[28px] border border-zinc-900/10 bg-black shadow-2xl shadow-black/40 dark:border-white/10",
+            isCompact ? "h-[62vh] min-h-[360px]" : "aspect-[3/4]",
+          ].join(" ")}
+        >
           <video
             ref={videoRef}
             playsInline
             autoPlay
             muted
-            className="aspect-[9/16] w-full rounded-2xl object-cover md:aspect-[3/4]"
+            className={[
+              "h-full w-full object-cover",
+              isCompact ? "rounded-[28px]" : "rounded-[28px]",
+            ].join(" ")}
           />
           {!isStreaming && (
             <div className="absolute inset-0 flex items-center justify-center bg-black/70 text-center text-white">
@@ -225,17 +258,25 @@ function CameraStudio() {
             </div>
           )}
         </div>
-        <div className="sticky bottom-4 z-20 -mx-1 rounded-2xl border border-zinc-200 bg-white/90 p-3 shadow-xl backdrop-blur supports-[backdrop-filter]:bg-white/70 dark:border-zinc-700 dark:bg-zinc-900/80 sm:static sm:m-0 sm:border-0 sm:bg-transparent sm:p-0 sm:shadow-none">
+        <div
+          className={[
+            "z-20 rounded-2xl border border-zinc-200 bg-white/95 p-4 shadow-2xl shadow-zinc-900/10 backdrop-blur dark:border-zinc-700 dark:bg-zinc-900/80",
+            "supports-[padding:max(env(safe-area-inset-bottom))]",
+            isCompact
+              ? "sticky bottom-4 -mx-1"
+              : "sm:static sm:m-0 sm:border-0 sm:bg-transparent sm:p-0 sm:shadow-none",
+          ].join(" ")}
+        >
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
             <button
-              className="flex-1 rounded-2xl bg-gradient-to-r from-zinc-900 to-zinc-800 px-4 py-3 text-base font-semibold text-white transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60 dark:from-white dark:to-zinc-200 dark:text-zinc-900 sm:rounded-full"
+              className="flex-1 rounded-2xl bg-gradient-to-r from-zinc-900 to-zinc-800 px-4 py-4 text-lg font-semibold text-white transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60 dark:from-white dark:to-zinc-200 dark:text-zinc-900 sm:rounded-full sm:text-base sm:py-3"
               onClick={capturePhoto}
               disabled={!isStreaming || isLoading}
             >
               Capture photo
             </button>
             <button
-              className="rounded-2xl border border-zinc-300 px-4 py-3 text-base font-semibold text-zinc-700 transition hover:border-zinc-900 hover:text-zinc-900 dark:border-zinc-700 dark:text-zinc-200 dark:hover:border-white dark:hover:text-white sm:flex-1 sm:rounded-full"
+              className="rounded-2xl border border-zinc-300 px-4 py-4 text-lg font-semibold text-zinc-700 transition hover:border-zinc-900 hover:text-zinc-900 dark:border-zinc-700 dark:text-zinc-200 dark:hover:border-white dark:hover:text-white sm:flex-1 sm:rounded-full sm:text-base sm:py-3"
               onClick={() =>
                 setFacingMode((prev) => (prev === "user" ? "environment" : "user"))
               }
@@ -259,7 +300,12 @@ function CameraStudio() {
         )}
       </div>
 
-      <div className="flex flex-col gap-4 rounded-2xl border border-dashed border-zinc-300 p-4 dark:border-zinc-700">
+      <div
+        className={[
+          "flex flex-col gap-4 rounded-3xl border border-dashed border-zinc-300 p-4 dark:border-zinc-700",
+          isCompact ? "bg-white/90 dark:bg-zinc-900/70" : "bg-white/50 dark:bg-transparent",
+        ].join(" ")}
+      >
         <div className="flex flex-col gap-1">
           <h3 className="text-xl font-semibold">Shots & uploads</h3>
           <p className="text-sm text-zinc-500 dark:text-zinc-400 sm:hidden">
