@@ -243,7 +243,7 @@ function CameraStudio() {
             muted
             className={[
               "h-full w-full object-cover",
-              isCompact ? "rounded-[28px]" : "rounded-[28px]",
+              facingMode === "user" ? "scale-x-[-1]" : "",
             ].join(" ")}
           />
           {!isStreaming && (
