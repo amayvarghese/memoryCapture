@@ -14,7 +14,7 @@ type FacingMode = "user" | "environment";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-gradient-to-b from-zinc-50 via-white to-zinc-100 px-4 pb-14 pt-8 text-zinc-900 dark:from-black dark:via-zinc-900 dark:to-black dark:text-zinc-100 sm:px-6 md:px-8">
+    <main className="min-h-screen bg-gradient-to-b from-zinc-50 via-white to-zinc-100 px-4 pb-20 pt-8 text-zinc-900 dark:from-black dark:via-zinc-900 dark:to-black dark:text-zinc-100 sm:px-6 md:px-8">
       <div className="mx-auto flex w-full max-w-5xl flex-col gap-8 sm:gap-10">
         <header className="flex flex-col gap-2 sm:gap-3">
           <p className="text-xs font-semibold uppercase tracking-[0.4em] text-zinc-500 sm:text-sm">
@@ -35,14 +35,14 @@ export default function Home() {
         <section className="rounded-2xl border border-zinc-200 bg-white/80 p-4 shadow-lg shadow-zinc-800/5 backdrop-blur dark:border-zinc-800 dark:bg-zinc-900/70 sm:p-6">
           <h2 className="text-2xl font-semibold">How to deploy</h2>
           <ol className="mt-4 space-y-3 text-base text-zinc-700 dark:text-zinc-300">
-            <li>
+            <li className="rounded-2xl border border-zinc-200 bg-white/80 p-3 text-sm leading-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900/60 sm:text-base sm:leading-7">
               <span className="font-semibold text-zinc-900 dark:text-white">
                 1. Push to GitHub
               </span>
               : inside the `web` folder run `git remote add origin YOUR_REPO_URL`,
               then `git push -u origin main`.
             </li>
-            <li>
+            <li className="rounded-2xl border border-zinc-200 bg-white/80 p-3 text-sm leading-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900/60 sm:text-base sm:leading-7">
               <span className="font-semibold text-zinc-900 dark:text-white">
                 2. Import in Vercel
               </span>
@@ -50,7 +50,7 @@ export default function Home() {
               it via “Monorepo configuration”), and use the default build command
               `npm run build`.
             </li>
-            <li>
+            <li className="rounded-2xl border border-zinc-200 bg-white/80 p-3 text-sm leading-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900/60 sm:text-base sm:leading-7">
               <span className="font-semibold text-zinc-900 dark:text-white">
                 3. Camera permissions
               </span>
@@ -201,6 +201,10 @@ function CameraStudio() {
   return (
     <section className="grid gap-5 rounded-3xl border border-zinc-200 bg-white/80 p-4 shadow-xl shadow-zinc-800/5 backdrop-blur dark:border-zinc-800 dark:bg-zinc-900/70 sm:p-6 md:grid-cols-2 md:gap-6 lg:grid-cols-[1.05fr_0.95fr]">
       <div className="flex flex-col gap-4">
+        <div className="rounded-2xl border border-zinc-200 bg-zinc-100/60 p-3 text-sm font-medium text-zinc-600 shadow-sm dark:border-zinc-700 dark:bg-zinc-900/60 dark:text-zinc-300 md:hidden">
+          Tip: rotate to landscape for a wider preview. Controls stay pinned at
+          the bottom for easy access.
+        </div>
         <div className="relative overflow-hidden rounded-2xl bg-black">
           <video
             ref={videoRef}
@@ -221,30 +225,32 @@ function CameraStudio() {
             </div>
           )}
         </div>
-        <div className="flex flex-wrap gap-3 sm:gap-4">
-          <button
-            className="flex-1 rounded-full bg-zinc-900 px-4 py-3 text-base font-semibold text-white transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-white dark:text-zinc-900"
-            onClick={capturePhoto}
-            disabled={!isStreaming || isLoading}
-          >
-            Capture photo
-          </button>
-          <button
-            className="rounded-full border border-zinc-300 px-4 py-3 text-base font-semibold text-zinc-700 transition hover:border-zinc-900 hover:text-zinc-900 dark:border-zinc-700 dark:text-zinc-200 dark:hover:border-white dark:hover:text-white sm:flex-1"
-            onClick={() =>
-              setFacingMode((prev) => (prev === "user" ? "environment" : "user"))
-            }
-            disabled={isLoading}
-          >
-            Switch camera
-          </button>
-          <button
-            className="rounded-full border border-transparent px-4 py-3 text-sm font-semibold text-zinc-500 transition hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
-            onClick={() => startCamera(facingMode)}
-            disabled={isLoading}
-          >
-            Refresh
-          </button>
+        <div className="sticky bottom-4 z-20 -mx-1 rounded-2xl border border-zinc-200 bg-white/90 p-3 shadow-xl backdrop-blur supports-[backdrop-filter]:bg-white/70 dark:border-zinc-700 dark:bg-zinc-900/80 sm:static sm:m-0 sm:border-0 sm:bg-transparent sm:p-0 sm:shadow-none">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
+            <button
+              className="flex-1 rounded-2xl bg-gradient-to-r from-zinc-900 to-zinc-800 px-4 py-3 text-base font-semibold text-white transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60 dark:from-white dark:to-zinc-200 dark:text-zinc-900 sm:rounded-full"
+              onClick={capturePhoto}
+              disabled={!isStreaming || isLoading}
+            >
+              Capture photo
+            </button>
+            <button
+              className="rounded-2xl border border-zinc-300 px-4 py-3 text-base font-semibold text-zinc-700 transition hover:border-zinc-900 hover:text-zinc-900 dark:border-zinc-700 dark:text-zinc-200 dark:hover:border-white dark:hover:text-white sm:flex-1 sm:rounded-full"
+              onClick={() =>
+                setFacingMode((prev) => (prev === "user" ? "environment" : "user"))
+              }
+              disabled={isLoading}
+            >
+              Switch camera
+            </button>
+            <button
+              className="rounded-2xl border border-transparent px-4 py-3 text-sm font-semibold text-zinc-500 transition hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white sm:rounded-full"
+              onClick={() => startCamera(facingMode)}
+              disabled={isLoading}
+            >
+              Refresh
+            </button>
+          </div>
         </div>
         {error && (
           <div className="rounded-2xl border border-amber-200 bg-amber-50/80 p-4 text-sm text-amber-800 dark:border-amber-500/40 dark:bg-amber-950/40 dark:text-amber-200">
@@ -265,8 +271,8 @@ function CameraStudio() {
             <div
               className="relative w-full overflow-hidden rounded-2xl border border-zinc-200 shadow-sm dark:border-zinc-700"
               style={{ aspectRatio: photoMeta ? `${photoMeta.width} / ${photoMeta.height}` : "3 / 4" }}
-            >
-              <Image
+          >
+            <Image
                 src={photo}
                 alt="Captured preview"
                 fill
@@ -289,7 +295,7 @@ function CameraStudio() {
                 Retake
               </button>
             </div>
-          </div>
+        </div>
         ) : (
           <p className="text-sm text-zinc-600 dark:text-zinc-400">
             Captured and uploaded photos will appear here. Save them to your
